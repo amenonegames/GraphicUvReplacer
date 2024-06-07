@@ -1,7 +1,7 @@
 {
   "name": "com.amenone.graphicuvreplacer",
   "displayName": "GraphicUvReplacer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2020.1",
   "description": "GraphicUvReplacer is a tool that replaces the UV of the Graphic component of the UI with the UV of the specified image. It is useful when you want to change the UV of the Graphic component of the UI.",
   "author": {
