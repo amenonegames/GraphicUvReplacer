@@ -6,5 +6,15 @@
   "description": "GraphicUvReplacer is a tool that replaces the UV of the Graphic component of the UI with the UV of the specified image. It is useful when you want to change the UV of the Graphic component of the UI.",
   "author": {
     "name": "amenonegames"
+  },
+  "samples": [
+  {
+    "displayName": "HDRP Shaders",
+    "description": "Contains sample shaders for the High Definition render pipeline",
+    "path": "Samples/DotweenExtension",
+    "dependencies": {
+      "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+    }
   }
+]
 }

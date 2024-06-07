@@ -1,0 +1,19 @@
+{
+    "name": "amenone.GraphicUvRepalacer.DotweenExtension",
+    "rootNamespace": "",
+    "references": [
+        "GUID:52f2b310574517646b7ad71e747a2e80",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:99eb65be34991ae4aa4cfa36d26c8c4a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
