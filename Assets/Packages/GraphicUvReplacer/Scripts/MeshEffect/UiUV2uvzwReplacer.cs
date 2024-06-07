@@ -1,5 +1,6 @@
 ﻿using System.Buffers;
 using System.Collections.Generic;
+using Packages.GraphicUvReplacer.Scripts.Abstract;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
@@ -8,12 +9,12 @@ namespace Amenone.GraphicUvReplacer.MeshEffect
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Graphic))]
-    public class UiUV3xyzwReplacer : BaseMeshEffect
+    public class UiUV2uvzwReplacer : UvzwReplacer
     {
-        
+
         private Vector4 uvzw;
 
-        public Vector4 UVXW
+        public override Vector4 UVZW
         {
             get { return uvzw; }
             set
@@ -45,12 +46,12 @@ namespace Amenone.GraphicUvReplacer.MeshEffect
             for (int i = 0; i < verts.Count; ++i)
             {
                 vt = verts[i];
-                vec4[i].x = UVXW.x;
-                vec4[i].y = UVXW.y;
-                vec4[i].z = UVXW.z;
-                vec4[i].w = UVXW.w;
+                vec4[i].x = UVZW.x;
+                vec4[i].y = UVZW.y;
+                vec4[i].z = UVZW.z;
+                vec4[i].w = UVZW.w;
                 
-                vt.uv3 = vec4[i];
+                vt.uv2 = vec4[i];
                 verts[i] = vt;
             }
 
