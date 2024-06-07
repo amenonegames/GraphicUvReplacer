@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.UI;
 
-namespace View.DialogueView.MeshEffect
+namespace Amenone.GraphicUvReplacer.MeshEffect
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Graphic))]
