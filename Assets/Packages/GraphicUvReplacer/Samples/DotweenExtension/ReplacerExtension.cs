@@ -8,7 +8,7 @@ namespace Packages.GraphicUvReplacer.Samples.DotweenExtension
 {
     public static class ReplacerExtension
     {
-        public static async UniTask EaseZAsync(this ZwReplacer replacer, Vector2 endValue, float duration, CancellationToken token)
+        public static async UniTask EaseZWAsync(this ZwReplacer replacer, Vector2 endValue, float duration, CancellationToken token)
         {
             await DOTween.To(() => replacer.ZW, (x) => replacer.ZW = x, endValue, duration);
         } 
