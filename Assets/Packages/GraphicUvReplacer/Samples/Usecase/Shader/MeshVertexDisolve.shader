@@ -1,4 +1,4 @@
-﻿Shader "Custom/VertexDissolve"
+﻿Shader "Custom/MeshVertexDisolve"
 {
     Properties
     {
@@ -10,13 +10,7 @@
         
         // 色
         _Color ("Tint", Color) = (1,1,1,1)
-        
-        [Toggle(_STENCIL)] _EnableStencil("Enable Stencil Testing", Float) = 0.0
-        _StencilReference("Stencil Reference", Range(0, 255)) = 0
-        [Enum(UnityEngine.Rendering.CompareFunction)]_StencilComparison("Stencil Comparison", Int) = 0
-        [Enum(UnityEngine.Rendering.StencilOp)]_StencilOperation("Stencil Operation", Int) = 0
-        
-        
+
         
     }
 
@@ -44,15 +38,7 @@
             // 基本的には True で良い
             "CanUseSpriteAtlas"="True"
         }
-
-        Stencil
-        {
-            Ref[_StencilReference]
-            Comp[_StencilComparison]
-            Pass[_StencilOperation]
-            
-            
-        }
+        
 
         // https://docs.unity3d.com/ja/current/Manual/SL-CullAndDepth.html
         // UI なのでカリング不要
@@ -119,8 +105,10 @@
                 float4 color    : COLOR;
 
                 // 1 番目の UV 座標
-                float4 texcoord : TEXCOORD0;
+                float2 texcoord : TEXCOORD0;
 
+                float2 disolveVal : TEXCOORD2;
+                
                 // インスタンシングが有効な場合に
                 //    uint instanceID : SV_InstanceID
                 // という定義が付け加えられる。
@@ -143,9 +131,7 @@
 
                 // 2 番目の UV 座標に頂点のワールド空間での位置を格納して渡す
                 float4 worldPosition : TEXCOORD1;
-
-                // フラグメントシェーダにインスタンスIDを受け渡す
-                UNITY_VERTEX_INPUT_INSTANCE_ID
+                
             };
 
             // テクスチャデータを参照するためにはテクスチャサンプラ型の値をプロパティ経由で受け取る
@@ -154,7 +140,7 @@
             
             // 色
             UNITY_INSTANCING_BUFFER_START(Props)
-               UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+               UNITY_DEFINE_INSTANCED_PROP(float4, _Color)
             UNITY_INSTANCING_BUFFER_END(Props)
             // テクスチャ変数名 に _ST を追加すると Tiling と Offset の値が入ってくる
             // x, y は Tiling 値の x, y で、z, w は Offset 値の z, w が入れられる
@@ -170,13 +156,10 @@
             {
                 // フラグメントシェーダーに渡す変数
                 v2f OUT;
-
-                // VR 用の目の情報と、GPU インスタンシングのためのインスタンシングごとの座標を反映させる
+                
                 // UnityInstancing.cginc を参照のこと
                 UNITY_SETUP_INSTANCE_ID(v);
-
-                // VR 用のテクスチャ配列の目を GPU に伝える
-                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
+                // UNITY_TRANSFER_INSTANCE_ID(v, OUT);
 
                 // オブジェクト空間の頂点の座標をカメラのクリップ空間に変換する
                 // UnityShaderUtilities.cginc より
@@ -193,14 +176,14 @@
                 // 変換した頂点のクリップ座標を渡す
                 OUT.vertex = vPosition;
                 
-                float intensity = v.texcoord.z;
+                float intensity = v.disolveVal.x;
                 float powedIntensity = pow(intensity , 2);
                 float antiCurvedIntensity = -pow(intensity-1 , 2) +1;
                 OUT.texcoord = float4( v.texcoord.xy , powedIntensity , antiCurvedIntensity);
                 //OUT.texcoord.w  = pow ( OUT.texcoord.z , 2);
                 
                 // 頂点カラーにプロパティのカラーを乗算
-                OUT.color = v.color * _Color;
+                OUT.color = v.color * UNITY_ACCESS_INSTANCED_PROP(Props, _Color);;
 
                 return OUT;
             }
@@ -212,9 +195,12 @@
                 half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd);
                 half4 dissolve = tex2D(_DissolveTex, IN.texcoord);
 
+                return IN.texcoord.z;
                 //IN.texcoord.zにIntensittyを格納して渡している
                 // float intensity =  IN.texcoord.z;;
                 float powedIntensity = IN.texcoord.z;
+
+                //return float4(IN.texcoord.z,IN.texcoord.z,IN.texcoord.z,1);
                 float antiCurvedIntensity = IN.texcoord.w;
                 float disolve = smoothstep( powedIntensity , antiCurvedIntensity , dissolve.a); 
                 //return float4(disolve,disolve,disolve,1);
@@ -225,10 +211,9 @@
             }
         // Cg/HLSL 終了
         ENDCG
-            
-            
         }
         
         
     }
 }
+

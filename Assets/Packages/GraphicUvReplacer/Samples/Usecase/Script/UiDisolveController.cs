@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Packages.GraphicUvReplacer.Samples.Usecase.Script
 {
-    public class DisolveController : MonoBehaviour
+    public class UiDisolveController : MonoBehaviour
     {
         private ZwReplacer _replacer;
         private ZwReplacer Replacer => _replacer??= GetComponent<ZwReplacer>();
