@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Packages.GraphicUvReplacer.Samples.DotweenExtension;
 using Packages.GraphicUvReplacer.Scripts.Abstract;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Packages.GraphicUvReplacer.Samples.Usecase.Script
 {
@@ -17,7 +18,9 @@ namespace Packages.GraphicUvReplacer.Samples.Usecase.Script
             
             Vector2 endValue = new Vector2(0, 0);
 
-            Replacer.EaseZWAsync(endValue, 1.0f, this.GetCancellationTokenOnDestroy()).Forget();
+            var duration = Random.Range(1, 5);
+            
+            Replacer.EaseZWAsync(endValue, duration, this.GetCancellationTokenOnDestroy()).Forget();
         }
     }
 }

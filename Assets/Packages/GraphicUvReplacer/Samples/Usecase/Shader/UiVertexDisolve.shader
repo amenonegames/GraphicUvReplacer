@@ -185,7 +185,7 @@
                 //OUT.texcoord.w  = pow ( OUT.texcoord.z , 2);
                 
                 // 頂点カラーにプロパティのカラーを乗算
-                OUT.color = v.color * _Color;
+                OUT.color = v.color * UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
 
                 return OUT;
             }
